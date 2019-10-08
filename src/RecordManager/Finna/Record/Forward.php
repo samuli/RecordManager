@@ -158,6 +158,8 @@ class Forward extends \RecordManager\Base\Record\Forward
             $data['format_ext_str_mv'][] = 'Image';
         }
 
+        $data['building'] = $this->getBuilding();
+
         return $data;
     }
 
@@ -493,6 +495,22 @@ class Forward extends \RecordManager\Base\Record\Forward
             }
         }
         return $results;
+    }
+
+    /**
+     * Get the building field
+     *
+     * @return array
+     */
+    protected function getBuilding()
+    {
+        foreach ($this->getMainElement()->ProductionEvent as $event) {
+            if (null !== $event->attributes()->{'elonet-tag'}
+                && (string)$event->attributes()->{'elonet-tag'} === 'skftunniste'
+            ) {
+                return 'skf';
+            }
+        }
     }
 
     /**
